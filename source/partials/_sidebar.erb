@@ -1,0 +1,77 @@
+<div class="sidebar">
+  <aside>
+    <h2><%= link_to("Author", "/profile.html") %></h2>
+    <p>
+      <%= h(data.config.site_info.author) %> 
+      <%= link_to("@" + h(data.config.site_info.twitter), "http://www.twitter.com/" + h(data.config.site_info.twitter)) if data.config.site_info.twitter %>
+    </p>
+    <p><%= h(data.config.site_info.description) %></p>
+  </aside>
+
+  <aside class="categories">
+    <h2><%= link_to("Categories", "/categories.html") %></h2>
+    <div>
+      <% blog.articles.group_by {|p| p.data.category }.each do |category, pages| %>
+      <% next if category.to_s == "" %>
+      <h3><%= link_to(h(category), "/categories/#{h(category)}.html") %></h3>
+      <ul>
+	<% num = 10 %>
+	<% pages[0..num-1].each do |page| %>
+	<li>
+	  <% if page.path == current_page.path %>
+	    <%= h(page.data.title) %>
+	  <% else %>
+	    <%= link_to(h(page.data.title), page) %>
+	  <% end %>
+	<% end %>
+	<% if pages.size > num %>
+	<li><%= link_to("...", "/categories/#{h(category)}.html") %>
+	  <% end %>
+      </ul>
+    <% end %>
+    </div>
+  </aside>
+  
+  <aside>
+    <h2><%= link_to("Tags", "/tags.html") %></h2>
+    <ul class="tag_box inline">
+      <% blog.tags.each do |tag, pages| %>
+      <% caption = "%{tag} <span>%{count}</span>" % {tag: h(tag), count: pages.count} %>
+      <li><%= link_to(caption, "/tags.html#" + h(tag)) %></li>
+      <% end %>
+    </ul>
+  </aside>
+  
+  <aside>
+    <h2><%= link_to("Recent Articles", "/recent.html") %></h2>
+    
+    <% blog.recent_articles_with_date.each do |date, pages| %>
+    <h4><%= date.strftime("%d %b %Y") %></h4>
+    <ul>
+      <% pages.each do |page| %>
+      <li><%= link_to(h(page.title), page) %></li>
+      <% end %>
+    </ul>
+    <% end %>
+  </aside>
+  
+
+<!--
+  <aside>
+    <h2>Series</h2>
+
+      <% sitemap.resources.group_by {|p| p.data.series }.each do |series, pages| %>
+      <% next if series.to_s == "" %>
+	<h3><%= h(series) %></h3>
+	<ol>
+	  <% pages.sort {|a, b| a.url <=> b.url }.each do |page| %>
+	    <li><%= link_to(h(page.data.title), page) %>
+	  <% end %>
+	</ol>
+      </li>
+      <% end %>
+
+  </aside>
+  <hr>
+-->
+</div>

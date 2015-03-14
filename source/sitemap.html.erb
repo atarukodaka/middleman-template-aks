@@ -1,0 +1,30 @@
+---
+title: Sitemap
+group: navigation
+---
+
+<h2>Articles</h2>
+<ul>
+<% blog.categories.each do |category, pages| %>
+  <% pages.each do |page| %>
+    <% next if page.ext != ".html" %>
+  <li>
+    <%= (category) ? "[" + h(category) + "] " : "" %>
+    <%= link_to(h(page.data.title), page) %>
+    ...<small><%= page.date.strftime("%Y/%m/%d") %></small>
+  </li>
+  <% end %>
+<% end %>
+</ul>
+
+<h2>Other Pages</h2>
+<ul>
+<% prefix = blog.options.prefix %>
+<% sitemap.resources.select {|p| !p.is_a?(Middleman::Blog::BlogArticle) && p.ext == ".html"}.each do |page| %>
+  <li>
+    <% title = page.data.title %>
+    <%= link_to(h((title.nil?) ? "[untitled]" : title), page) %>
+  </li>
+<% end %>
+</ul>
+

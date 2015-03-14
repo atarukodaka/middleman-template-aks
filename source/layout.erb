@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- Always force latest IE rendering engine or request Chrome Frame -->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    
+    <!-- Use title if it's in the page YAML frontmatter -->
+    <title><%= current_page.data.title %> - <%= data.config.site_info.title %></title>
+    
+    <%= javascript_include_tag "jquery-1.11.0.min.js" %>
+    <%= javascript_include_tag "bootstrap.min.js" %>
+    <%= stylesheet_link_tag "normalize.css" %>
+    <%= stylesheet_link_tag "bootstrap.min.css" %>
+    <%= stylesheet_link_tag "style.css" %>
+    <%= stylesheet_link_tag "amazon.css" %>
+    <%= stylesheet_link_tag "pygment_trac.css" %>
+  </head>
+  
+  <body>
+    <div class="container">
+      <div class="row">
+	<!-- header eyecatch -->
+	<div class="pane">
+	  <header class="eyecatch pane" id="header">
+	    <div class="sitename"><%= link_to(h(data.config.site_info.title), top_page())  %></div>
+	  </header>
+	</div>
+	<!-- navbar -->
+	<div class="pane">
+	  <%= partial("partials/navbar") %>
+	</div>
+      </div>
+
+      <!-- sidebar / main -->
+      <div class="row">
+	<div class="pane col-sm-9" id="main">
+	  <%= yield %>
+	</div>
+	<div class="pane col-sm-3">  <!--  hidden-xs hidden-sm" -->
+	  <%= partial "partials/sidebar" %>
+	</div>
+      </div>
+      <!-- footer -->
+      <div class="row">
+	<footer id="footer" class="pane">
+	  <div class="copyright">
+	    &copy; <%= h data.config.site_info.author %> 
+	    (<%= h data.config.site_info.email %>) 
+	    powered by middleman and twitter-bootstrap
+	  </div>
+	</footer>
+      </div> <!-- row -->
+    </div> <!-- container -->
+    <%= google_analytics_tag() %>
+
+<!-- NINJA ANALYZE -->
+<script type="text/javascript">
+//<![CDATA[
+(function(d) {
+  var sc=d.createElement("script"),
+      ins=d.getElementsByTagName("script")[0];
+  sc.type="text/javascript";
+  sc.src=("https:"==d.location.protocol?"https://":"http://") + "code.analysis.shinobi.jp" + "/ninja_ar/NewScript?id=00344800&hash=644890e0&zone=36";
+  sc.async=true;
+  ins.parentNode.insertBefore(sc, ins);
+})(document);
+//]]>
+</script>
+<!-- /NINJA ANALYZE -->
+
+
+  </body>
+</html>
+
+
