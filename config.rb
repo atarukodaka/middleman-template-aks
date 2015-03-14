@@ -10,7 +10,6 @@ set :images_dir, 'images'
 ################
 # layout
 
-#set :layout, :article
 set :layout, :page
 
 ################
@@ -32,7 +31,6 @@ end
 
 # categories
 ready do
-  #binding.pry
   #sitemap.resources.group_by {|p| p.data["category"] }.each do |category, pages|
   blog.articles.group_by {|p| p.data["category"]}.each do |category, articles|
     next if category.nil?
@@ -51,15 +49,18 @@ end
 
 #activate :directory_indexes
 activate :syntax
-activate :google_analytics, :tracking_id => "UA-56531446-2"
+activate :google_analytics, :tracking_id => data.config.google_analytics.tracking_id
 activate :alias
-#activate :vcs_time
-#activate :i18n
 
-require './extensions/series'
-activate :series
+#require './extensions/series'
+#activate :series
+
 require './extensions/middleman-blog-enhanced'
 activate :blog_enhanced
+
+activate :disqus do |d|
+  d.shortname = data.config.disqus.shortname
+end
 
 ################
 # deploy to github proj-page
@@ -76,10 +77,12 @@ configure :build do
 end
 
 Time.zone = "Tokyo"
+
 set :relative_links, true
 
 ################
 # Reload the browser automatically whenever files change
+
 configure :development do
   activate :livereload
 end
@@ -87,11 +90,11 @@ end
 ################
 # markdown
 
-set :markdown_engine, :kramdown #:redcarpet
+#set :markdown_engine, :kramdown #:redcarpet
 set :markdown_engine, :redcarpet
 set :markdown, :fenced_code_blocks => true, :autolink => true, :smartypants => true, :tables => true
 
-set :org, :layout_engine => :org
+#set :org, :layout_engine => :org
  
 
 ################
