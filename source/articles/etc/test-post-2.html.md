@@ -1,7 +1,6 @@
 ---
-title: Test Article
+title: Test Article 2
 date: 2015-3-15
-category: testing
 ---
 
 ## Heading
@@ -12,4 +11,7 @@ category: testing
 ```
 code
 ```
+
+[google](http://www.google.com)
+
 

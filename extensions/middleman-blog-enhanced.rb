@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
 module Middleman
   module BlogEnhanced
-    module ResourceIncluded
+    ################################################################
+    # blog.* へのヘルパーメソッド
+    #
+    module ResourceIncludedToBlogData
       def categories
-        articles.group_by {|p| p.data.category }
+        articles.group_by {|p| p.category }
       end
 
       def articles_with_date
@@ -24,11 +28,32 @@ module Middleman
         end
         return hash.sort {|(dt1, v1), (dt2, v2)| dt2 <=> dt1 } # reverse sorted by date
       end
-    end  ################
+    end  
+    ################################################################
+    # blog.articles.* への追加メソッド
+    module ResourceIncludedToBlogArticle
+      #  article.category で指定カテゴリを取れるように
+      #   - frontmatter で指定：article.data.category
+      #   - 配置ディレクトリで暗黙に指定： metadata[:page]["category"]
+      #
+      # 前者を優先
+      #
+      def category
+        return self.data.category || self.metadata[:page]["category"]
+      end
 
+      #def series_number
+      #  self.path =~ Regexp.new("/([0-9]+)\-[^/]+\.html$")
+      #  return $1.to_i
+      #end
+    end
+    ################
     class Extension < Middleman::Extension
       Middleman::Blog::BlogData.class_eval do 
-        include ResourceIncluded
+        include ResourceIncludedToBlogData
+      end
+      Middleman::Blog::BlogArticle.class_eval do
+        include ResourceIncludedToBlogArticle
       end
     end
   end

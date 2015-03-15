@@ -1,13 +1,15 @@
 <div class="sidebar">
+  <%= partial("partials/_google_custom_search") %>
+  <!-- ================ -->
   <aside>
-    <h2><%= link_to("Author", "/profile.html") %></h2>
+    <h2><%= link_to("Profile", "/profile.html") %></h2>
     <p>
       <%= h(data.config.site_info.author) %> 
       <%= link_to("@" + h(data.config.site_info.twitter), "http://www.twitter.com/" + h(data.config.site_info.twitter)) if data.config.site_info.twitter %>
     </p>
     <p><%= h(data.config.site_info.description) %></p>
   </aside>
-
+  <!-- ================ -->
   <aside class="categories">
     <h2><%= link_to("Categories", "/categories.html") %></h2>
     <div>
@@ -31,7 +33,7 @@
     <% end %>
     </div>
   </aside>
-  
+  <!-- ================ -->
   <aside>
     <h2><%= link_to("Tags", "/tags.html") %></h2>
     <ul class="tag_box inline">
@@ -41,7 +43,7 @@
       <% end %>
     </ul>
   </aside>
-  
+  <!-- ================ -->  
   <aside>
     <h2><%= link_to("Recent Articles", "/recent.html") %></h2>
     

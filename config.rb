@@ -7,6 +7,9 @@ set :css_dir, 'stylesheets'
 set :js_dir, 'javascripts'
 set :images_dir, 'images'
 
+
+#set :source, 'source-dev'    ## for debug
+
 ################
 # layout
 
@@ -31,8 +34,7 @@ end
 
 # categories
 ready do
-  #sitemap.resources.group_by {|p| p.data["category"] }.each do |category, pages|
-  blog.articles.group_by {|p| p.data["category"]}.each do |category, articles|
+  blog.articles.group_by {|p| p.metadata[:page]["category"]}.each do |category, articles|
     next if category.nil?
     proxy("/categories/#{category}.html", "category.html",
           :locals => { :category => category, :articles => articles, :ignore => true })
@@ -57,6 +59,8 @@ activate :alias
 
 require './extensions/middleman-blog-enhanced'
 activate :blog_enhanced
+#require './extensions/add_category_to_article'
+#activate :add_category_to_article
 
 activate :disqus do |d|
   d.shortname = data.config.disqus.shortname
@@ -95,7 +99,6 @@ set :markdown_engine, :redcarpet
 set :markdown, :fenced_code_blocks => true, :autolink => true, :smartypants => true, :tables => true
 
 #set :org, :layout_engine => :org
- 
 
 ################
 # Build-specific configuration
@@ -148,3 +151,4 @@ end
 
 # Automatic image dimensions on image_tag helper
 # activate :automatic_image_sizes
+
