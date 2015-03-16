@@ -10,7 +10,7 @@ deploy:
 	ASSET_HOST=/site $(MM) deploy -b
 
 webrick:
-	ruby server.rb >& /dev/null&
+	ruby webrick.rb >& /dev/null&
 
 clean:
 	rm -rf build
