@@ -1,7 +1,0 @@
-access_key_id: XXX
-secret_key: XX
-associate_tag: xxxxx-22
-country: jp
-locale: ja
-use_cache: true
-cache_dir: .caches/amazon
