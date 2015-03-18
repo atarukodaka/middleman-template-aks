@@ -3,7 +3,16 @@ module SiteHelpers
   include ERB::Util
 
   ## sitemap helper
+  def copyright
+    years = blog.articles.group_by {|a| a.date.year}.map {|year, articles| year}
+    start_year = years[-1]
+    end_year = years[0]
+
+    years_str = (start_year == end_year) ? start_year.to_s : "%d-%d" % [start_year, end_year]
+    "&copy; %s by %s (%s)" % [years_str, h(data.config.site_info.author), h(data.config.site_info.email)]
+  end
   def top_page
+   # binding.pry
     sitemap.find_resource_by_path("/index.html")    # page
   end
   def link_to_page(page)
@@ -11,6 +20,17 @@ module SiteHelpers
       page = sitemap.find_resource_by_path(page) || raise("no such resource: #{page}") # yet
     end
     link_to(h(page.data.title) || "(untitled)", page)
+  end
+  def link_to_page_formatted(page, format=nil)
+    format ||= "%{page_link}...<small>[%{category_summary}] at %{date}</small>"
+    
+    hash = {
+      page_link: link_to_page(page),
+      page_title: h(page.data.title),
+      category_summary: link_to(h(page.category), category_summary_page(page.category)) || "-",
+      date: page.date.strftime("%d %b %Y")
+    }
+    format % hash
   end
 
   def select_html_pages
@@ -176,8 +196,9 @@ module SiteHelpers
   end
 
   ################
-  def img_link(url, alt, width=nil, height=nil)
-    
+  def ___img(url, *args)
+    #opt
+    #%Q[<img src="#{src}" alt="#{h(alt)">]
   end
 
 

@@ -69,7 +69,7 @@ activate :alias
 require './extensions/middleman-blog-enhanced'
 activate :blog_enhanced
 
-require './extensions/amazon-link'
+#require './extensions/amazon-link'
 activate :amazon_link do |amazon|
   amazon.associate_tag = data.config.amazon.associate_tag
   amazon.aws_access_key_id = data.config.amazon.aws_access_key_id
@@ -93,10 +93,11 @@ activate :deploy do |deploy|
 end
 
 configure :build do
-  if ah = ENV['ASSET_HOST']
-    activate :asset_host, :host => ah
+  if asset_host = ENV['ASSET_HOST']
+    activate :asset_host, :host => asset_host
   end
 end
+
 
 set :relative_links, true
 
@@ -114,7 +115,8 @@ end
 set :markdown_engine, :redcarpet
 set :markdown, :fenced_code_blocks => true, :autolink => true, :smartypants => true, :tables => true
 
-#set :org, :layout_engine => :org
+set :org, :layout_engine => :org
+set :aks, :layout_engine => :aks
 
 ################
 # Build-specific configuration
@@ -167,4 +169,3 @@ end
 
 # Automatic image dimensions on image_tag helper
 # activate :automatic_image_sizes
-
