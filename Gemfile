@@ -19,10 +19,10 @@ gem 'therubyracer'
 gem 'nokogiri'   # for middleman-blog summary
 
 gem 'middleman-livereload', "~> 3.1.0"
+gem 'middleman-dotenv'
 
 gem 'middleman-disqus'
-gem "middleman-syntax"
-#gem 'rouge'
+gem 'middleman-rouge'
 
 ## layout engine
 
@@ -39,10 +39,11 @@ gem 'compass'
 
 gem "amazon-ecs"
 gem "middleman-amazon-link" # , :path => File.join(ext_dir, "middleman-amazon-link")
-gem 'dotenv'
+#gem 'dotenv'
 
 ## debug
 gem 'pry-byebug'
+gem 'middleman-pry'
 gem 'rb-readline'   # for pry
 
 # For faster file watcher updates on Windows:
