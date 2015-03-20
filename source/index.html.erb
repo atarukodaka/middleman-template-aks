@@ -1,10 +1,13 @@
 ---
 title: Home
-pageable: true
 layout: page
 ---
 
-<%= partial("partials/summary", locals: {articles: page_articles}) %>
+Hi, This is my site.
+
+<h1>Recent Articles </h1>
+
+<%= partial("partials/summary", locals: {articles: blog.articles[0..4]}) %>
 
 <% if paginate %>
   <nav>
@@ -17,3 +20,6 @@ layout: page
   </nav>
 <% end %>
 
+<div>
+... <a href="articles/">see more articles</a>
+</div>

@@ -15,7 +15,7 @@
     <div>
       <% blog.articles.group_by {|p| p.category }.each do |category, pages| %>
       <% next if category.to_s == "" %>
-      <h3><%= link_to(h(category), "/categories/#{h(category)}.html") %></h3>
+      <h3><%= link_to_category_summary_page(category) %></h3>
       <ul class="article_list">
 	<% num = 10 %>
 	<% pages[0..num-1].each do |page| %>
@@ -45,7 +45,7 @@
   </aside>
   <!-- ================ -->  
   <aside>
-    <h2>Archives</h2>
+    <h2><%= link_to("Archives", "#{blog.options.prefix}archives.html") %></h2>
     <ul>
       <% blog.articles.group_by {|a| sprintf("%04d%02d", a.date.year, a.date.month) }.each do |year, articles| %>
       <% article = articles.first %>
@@ -57,13 +57,12 @@
   
   <!-- ================ -->  
   <aside>
-    <h2>Recent Articles</h2>
+    <h2><%= link_to("Recent Articles", blog.options.prefix) %></h2>
 
     <% num_recent_articles = 10 %>
     <% blog.articles.group_by {|a| a.date}.each do |date, articles| %>
-    <!-- % blog.recent_articles_with_date.each do |date, pages| % -->
     <h4><%= date.strftime("%d %b %Y") %></h4>
-    <ul>
+    <ul class="article_list">
       <% articles.each do |article| %>
       <li><%= link_to_page(article) %></li>
         <% num_recent_articles -= 1 %>

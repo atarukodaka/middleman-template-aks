@@ -34,8 +34,11 @@ activate :blog do |blog|
   # archives
   #blog.month_template = "archives_monthly.html"
   #blog.calendar_template = "calendar.html"
-  blog.month_template = "archive_monthly.html"
-  blog.month_link = "../archives/{year}/{month}.html"
+
+  blog.year_template = "proxy_templates/archives_yearly_template.html"
+  blog.month_template = "proxy_templates/archives_monthly_template.html"
+  blog.year_link = "archives/{year}/index.html"
+  blog.month_link = "archives/{year}/{month}.html"
 
   # pagination
   blog.paginate = true
@@ -43,15 +46,34 @@ activate :blog do |blog|
   blog.per_page = 10
 end
 
-# categories
+# archives
+
+=begin
 ready do
-  blog.articles.group_by {|p| p.metadata[:page]["category"]}.each do |category, articles|
-    next if category.nil?
-    proxy("/categories/#{category}.html", "category_summary.html",
-          :locals => { :category => category, :articles => articles, :ignore => true })
+  archives_proxy = {
+    yearly: {
+      template: "archives_yearly_template.html",
+      path_template: "/archives/%{year}.html",
+      link_to: lamdba {|year| archives_proxy[:yearly][:path_template] % [year: year]}
+    }
+    monthly: {
+      template: "archives_yearly_template.html",
+      path_template: "/archives/%{year}/%{month}.html",
+      link_to: lamdba {|year| archives_proxy[:yearly][:path_template] % [year: year, month: month.rjust(2, "0")]}
+    }
+  }
+  blog.articles.group_by {|a| a.date.year }.each do |year, year_articles|
+    proxy("/archives/%04d/index.html" % [year], blog.options[:year_template],
+          :locals => {:year => year, :articles => year_articles})
+    year_articles.group_by {|a| a.date.month }.each do |month, month_articles|
+      proxy("/archives/%04d/%02d.html" % [year, month], blog.options[:month_template],
+            :locals => {:year => year, :month => month, :articles => month_articles})
+    end
   end
-  ignore "/category_summary.html"
 end
+
+=end
+
 Time.zone = "Tokyo"
 
 ################
@@ -64,11 +86,17 @@ end
 #activate :directory_indexes
 activate :google_analytics, :tracking_id => data.config.google_analytics.tracking_id
 activate :rouge_syntax    # , :lineanchor => 'line'
-#activate :syntax
 activate :alias
 
 require './extensions/middleman-blog-enhanced'
 activate :blog_enhanced
+
+require './extensions/middleman-blog-category-summary'
+activate :blog_category_summary do |c|
+  c.proxy_template = "/proxy_templates/category_summary_template.html"
+  #c.outputpath_template = "/category/%{category}.html"
+end
+
 
 #require './extensions/amazon-link'
 activate :amazon_link do |amazon|
